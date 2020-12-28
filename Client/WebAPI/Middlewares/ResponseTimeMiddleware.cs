@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -12,10 +13,12 @@ namespace WebAPI.Middlewares
         private readonly RequestDelegate _next;
         public ResponseTimeMiddleware(RequestDelegate next)
         {
-            _next = next;
+            _next = next ?? throw new ArgumentNullException(nameof(next));
         }
         public Task InvokeAsync(HttpContext context)
         {
+            if (context == null) throw new ArgumentNullException(nameof(context));
+
             // Start the Timer using Stopwatch  
             var watch = new Stopwatch();
             watch.Start();

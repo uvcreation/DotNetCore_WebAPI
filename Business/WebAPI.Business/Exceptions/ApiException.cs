@@ -3,6 +3,9 @@ using System.Globalization;
 
 namespace WebAPI.Business.Exceptions
 {
+    /// <summary>
+    /// Api Exception
+    /// </summary>
     public class ApiException : Exception
     {
         public ApiException() : base() { }

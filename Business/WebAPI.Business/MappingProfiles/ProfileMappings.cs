@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using WebAPI.Business.Dto;
+using WebAPI.Business.Models;
 using WebAPI.Repository.Entities;
 
 namespace WebAPI.Business.MappingProfiles
 {
+    /// <summary>
+    /// Register mappings
+    /// </summary>
     public class ProfileMappings : Profile
     {
         public ProfileMappings()
         {
-            CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<Product, ProductModel>().ReverseMap();
         }
     }
 }

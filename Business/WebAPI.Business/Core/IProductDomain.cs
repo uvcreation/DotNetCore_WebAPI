@@ -1,17 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebAPI.Business.Dto;
+using WebAPI.Business.Models;
+using WebAPI.Repository.Entities;
 
 namespace WebAPI.Business.Core
 {
+    /// <summary>
+    /// Product Business - Get/Add/Update/Remove  
+    /// </summary>
     public interface IProductDomain
     {
-        Task<ProductDto> GetProductById(int id);
-        Task AddProducts(List<ProductDto> entity);
-        Task UpdateProduct(List<ProductDto> entity);
+        /// <summary>
+        /// Get product by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<Product> GetProductById(int id);
+
+        /// <summary>
+        /// Add products 
+        /// </summary>
+        /// <param name="productModels"></param>
+        /// <returns></returns>
+        Task AddProducts(List<ProductModel> productModels);
+
+        /// <summary>
+        /// Update products
+        /// </summary>
+        /// <param name="products"></param>
+        /// <returns></returns>
+        Task UpdateProducts(List<Product> products);
+
+        /// <summary>
+        /// Remove product by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         Task RemoveProduct(int id);
-        Task<IEnumerable<ProductDto>> GetAllProducts();
+
+        /// <summary>
+        /// Get all products
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<Product>> GetAllProducts();
     }
 }

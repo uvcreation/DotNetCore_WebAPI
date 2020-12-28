@@ -1,51 +1,75 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using WebAPI.Business.Core;
-using WebAPI.Business.Dto;
+using WebAPI.Business.Models;
 using WebAPI.Repository.Core;
 using WebAPI.Repository.Entities;
 
 namespace WebAPI.Business.Implementation
 {
+    /// <summary>
+    /// Product Business - Get/Add/Update/Remove  
+    /// </summary>
     public class ProductDomain : IProductDomain
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
         public ProductDomain(IProductRepository productRepository, IMapper mapper)
         {
-            _productRepository = productRepository;
-            _mapper = mapper;
+            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-        public async Task AddProducts(List<ProductDto> entity)
+
+        /// <summary>
+        /// Add products 
+        /// </summary>
+        /// <param name="productModels"></param>
+        /// <returns></returns>
+        public async Task AddProducts(List<ProductModel> productModels)
         {
-            var products = _mapper.Map<List<ProductDto>, List<Product>>(entity);
+            var products = _mapper.Map<List<ProductModel>, List<Product>>(productModels);
             await _productRepository.AddProducts(products);
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllProducts()
+        /// <summary>
+        /// Get all products
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Product>> GetAllProducts()
         {
-            var products = await _productRepository.GetAllProducts();
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
+            return await _productRepository.GetAllProducts();
         }
 
-        public async Task<ProductDto> GetProductById(int id)
+        /// <summary>
+        /// Get product by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Product> GetProductById(int id)
         {
-            var products = await _productRepository.GetById(id);
-            return _mapper.Map<Product, ProductDto>(products);
+            return await _productRepository.GetById(id);
         }
 
+        /// <summary>
+        /// Remove product by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task RemoveProduct(int id)
         {
             await _productRepository.RemoveProduct(id);
         }
 
-        public async Task UpdateProduct(List<ProductDto> entity)
+        /// <summary>
+        /// Update products
+        /// </summary>
+        /// <param name="products"></param>
+        /// <returns></returns>
+        public async Task UpdateProducts(List<Product> products)
         {
-            var products = _mapper.Map<List<ProductDto>, List<Product>>(entity);
-            await _productRepository.UpdateProduct(products);
+            await _productRepository.UpdateProducts(products);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace WebAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Configuration.AddLogging();
         }
 
         public IConfiguration Configuration { get; }

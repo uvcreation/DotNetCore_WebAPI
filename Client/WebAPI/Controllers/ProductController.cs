@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPI.Business.Core;
-using WebAPI.Business.Dto;
+using WebAPI.Business.Models;
+using WebAPI.Repository.Entities;
 
 namespace WebAPI.Controllers
 {
@@ -11,55 +15,92 @@ namespace WebAPI.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductDomain _productDomain;
-
         public ProductController(IProductDomain productDomain)
         {
-            _productDomain = productDomain;
+            _productDomain = productDomain ?? throw new ArgumentNullException(nameof(productDomain));
         }
 
+        /// <summary>
+        /// Get all products
+        /// </summary>
+        /// <returns>ProductDto</returns>
         [HttpGet]
         [Route("GetAllProduct")]
-        public async Task<ActionResult<ProductDto>> GellAll()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ProductModel>> GellAll()
         {
             var products = await _productDomain.GetAllProducts();
             return Ok(products);
         }
 
+        /// <summary>
+        /// Get product by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetProductById/{id}")]
-        public async Task<ActionResult<ProductDto>> GetById(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ProductModel>> GetById(int id)
         {
             var product = await _productDomain.GetProductById(id);
             return Ok(product);
         }
 
+        /// <summary>
+        /// Add products
+        /// </summary>
+        /// <param name="productModels"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("AddProduct")]
-        public async Task<ActionResult> AddProducts(List<ProductDto> entity)
+        [Route("AddProducts")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> AddProducts([FromBody] List<ProductModel> productModels)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            await _productDomain.AddProducts(entity);
+            await _productDomain.AddProducts(productModels);
             return Ok();
         }
 
-        //TODO: Testing pending for 1000 record / sec 
+        /// <summary>
+        /// Update products
+        /// </summary>
+        /// <param name="products"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("UpdateProduct")]
-        public async Task<ActionResult> Update(List<ProductDto> entity)
+        [Route("UpdateProducts")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> Updates(List<Product> products)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            await _productDomain.UpdateProduct(entity);
+            await _productDomain.UpdateProducts(products);
             return Ok();
         }
 
+        /// <summary>
+        /// Delete product
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("DeleteProductById/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Delete(int id)
         {
             await _productDomain.RemoveProduct(id);
