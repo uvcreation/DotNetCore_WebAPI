@@ -16,17 +16,12 @@ namespace WebAPI
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false)
-                .Build();
-            
             var port = Environment.GetEnvironmentVariable("PORT");
-
+            
             var webHost = WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://*:" + port)
-                .UseKestrel()
-                .UseStartup<Startup>();
+                            .UseUrls("http://*:" + port)
+                            .UseKestrel()
+                            .UseStartup<Startup>();
 
             return webHost;
         }

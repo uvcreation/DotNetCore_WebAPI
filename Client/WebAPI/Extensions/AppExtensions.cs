@@ -32,6 +32,7 @@ namespace WebAPI.Extensions
         /// <param name="app"></param>
         public static void UseMiddlewares(this IApplicationBuilder app)
         {
+            app.UseMiddleware<JwtMiddleware>();
             app.UseMiddleware<ResponseTimeMiddleware>();
             app.UseMiddleware<ErrorHandlerMiddleware>();
         }

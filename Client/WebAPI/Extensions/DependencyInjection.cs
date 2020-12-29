@@ -24,6 +24,7 @@ namespace WebAPI.Extensions
             services.AddScoped<ICommandText, CommandText>();
             services.AddScoped<IDapperRepositoryBase, DapperRepositoryBase>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IUserService, UserService>();
             services.AddAutoMapper(typeof(ProfileMappings));
             services.AddLogging();
             return services;

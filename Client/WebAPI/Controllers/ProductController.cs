@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPI.Business.Core;
+using WebAPI.Business.Filter;
 using WebAPI.Business.Models;
 using WebAPI.Repository.Entities;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase

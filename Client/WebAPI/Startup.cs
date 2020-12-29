@@ -25,6 +25,7 @@ namespace WebAPI
             services.AddControllers();
             services.AddSwaggerExtension();
             services.AddDatabaseConnection(Configuration);
+            services.AddAppSettings(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,8 +41,6 @@ namespace WebAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
