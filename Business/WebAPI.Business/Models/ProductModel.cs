@@ -18,6 +18,7 @@ namespace WebAPI.Business.Models
         /// Product Cost
         /// </summary>
         [Required(ErrorMessage = "Please provide product cost")]
+        [Range(1, int.MaxValue, ErrorMessage = "Product cost can not be zero")]
         public double Cost { get; set; }
     }
 }
