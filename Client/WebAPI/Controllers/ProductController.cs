@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -29,7 +28,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ProductModel>> GellAll()
+        public async Task<IActionResult> GellAll()
         {
             var products = await _productDomain.GetAllProducts();
             return Ok(products);
@@ -45,7 +44,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ProductModel>> GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             var product = await _productDomain.GetProductById(id);
             return Ok(product);
@@ -61,7 +60,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> AddProducts([FromBody] List<ProductModel> productModels)
+        public async Task<IActionResult> AddProducts(List<ProductModel> productModels)
         {
             if (!ModelState.IsValid)
             {
@@ -81,7 +80,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> Updates(List<Product> products)
+        public async Task<IActionResult> Updates(List<Product> products)
         {
             if (!ModelState.IsValid)
             {
@@ -101,7 +100,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _productDomain.RemoveProduct(id);
             return Ok();

@@ -14,7 +14,7 @@ namespace WebAPI.Business.Test
     public class ProductDomainTest
     {
         private readonly Mock<IProductRepository> _mockProductRepository = new Mock<IProductRepository>();
-        private readonly Mock<IMapper> _mockIMapper = new Mock<IMapper>();
+        private readonly Mock<IMapper> _mockMapper = new Mock<IMapper>();
 
         [Fact]
         public async Task Should_GetProductById_When_InputIsValid()
@@ -27,12 +27,12 @@ namespace WebAPI.Business.Test
                 .Setup(p => p.GetById(expectedResult))
                 .Returns(Task.FromResult(product));
 
-            _mockIMapper
+            _mockMapper
                 .Setup(m => m.Map<List<ProductModel>, List<Product>>(It.IsAny<List<ProductModel>>()))
                  .Verifiable();
 
             //Act
-            var productDomain = new ProductDomain(_mockProductRepository.Object, _mockIMapper.Object);
+            var productDomain = new ProductDomain(_mockProductRepository.Object, _mockMapper.Object);
             var actualResult = await productDomain.GetProductById(expectedResult);
 
             //Assert
@@ -54,12 +54,12 @@ namespace WebAPI.Business.Test
                 .Setup(p => p.GetAllProducts())
                 .Returns(Task.FromResult<IEnumerable<Product>>(expectedResult));
 
-            _mockIMapper
+            _mockMapper
                 .Setup(m => m.Map<List<ProductModel>, List<Product>>(It.IsAny<List<ProductModel>>()))
                  .Verifiable();
 
             //Act
-            var productDomain = new ProductDomain(_mockProductRepository.Object, _mockIMapper.Object);
+            var productDomain = new ProductDomain(_mockProductRepository.Object, _mockMapper.Object);
             var actualResult = await productDomain.GetAllProducts();
 
             //Assert

@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using WebAPI.Business.Core;
 using WebAPI.Business.Implementation;
 using WebAPI.Business.MappingProfiles;
-using WebAPI.Business.Validator;
 using WebAPI.Repository.Core;
 using WebAPI.Repository.Implementation;
 
@@ -28,8 +26,6 @@ namespace WebAPI.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddAutoMapper(typeof(ProfileMappings));
             services.AddLogging();
-            services.AddControllers()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ProductValidator>());
             return services;
         }
     }
