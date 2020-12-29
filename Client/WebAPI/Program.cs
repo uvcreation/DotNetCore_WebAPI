@@ -19,8 +19,8 @@ namespace WebAPI
             var port = Environment.GetEnvironmentVariable("PORT");
             
             var webHost = WebHost.CreateDefaultBuilder(args)
-                            .UseUrls("http://*:" + port)
-                            .UseKestrel()
+                            //.UseUrls("http://*:" + port)
+                            //.UseKestrel()
                             .UseStartup<Startup>();
 
             return webHost;

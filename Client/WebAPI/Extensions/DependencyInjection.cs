@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using WebAPI.Business.Core;
 using WebAPI.Business.Implementation;
 using WebAPI.Business.MappingProfiles;
@@ -26,7 +27,6 @@ namespace WebAPI.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddAutoMapper(typeof(ProfileMappings));
-            services.AddLogging();
             return services;
         }
     }

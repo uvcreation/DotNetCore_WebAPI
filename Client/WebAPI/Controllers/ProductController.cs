@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,9 +17,11 @@ namespace WebAPI.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductDomain _productDomain;
-        public ProductController(IProductDomain productDomain)
+        private readonly ILogger _logger;
+        public ProductController(IProductDomain productDomain, ILogger logger)
         {
             _productDomain = productDomain ?? throw new ArgumentNullException(nameof(productDomain));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
@@ -32,6 +35,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GellAll()
         {
+            _logger.Information($"Get all products");
             var products = await _productDomain.GetAllProducts();
             return Ok(products);
         }
@@ -48,6 +52,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetById(int id)
         {
+            _logger.Information($"Get product for id: {id}");
             var product = await _productDomain.GetProductById(id);
             return Ok(product);
         }
@@ -68,7 +73,9 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
+            _logger.Information("Adding products");
             await _productDomain.AddProducts(productModels);
+            _logger.Information("Products added successfully!");
             return Ok();
         }
 
@@ -88,7 +95,9 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
+            _logger.Information("Updatings products");
             await _productDomain.UpdateProducts(products);
+            _logger.Information("Products updated successfully!");
             return Ok();
         }
 
@@ -104,7 +113,9 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Delete(int id)
         {
+            _logger.Information($"Remove product for id: {id}");
             await _productDomain.RemoveProduct(id);
+            _logger.Information($"Product removed successfully!");
             return Ok();
         }
     }

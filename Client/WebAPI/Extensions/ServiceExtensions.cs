@@ -98,10 +98,11 @@ namespace WebAPI.Extensions
         }
 
         /// <summary>
-        /// Add logging service
+        /// Add serilog service
         /// </summary>
+        /// <param name="services"></param>
         /// <param name="configuration"></param>
-        public static void AddLogging(this IConfiguration configuration)
+        public static void AddLogging(this IServiceCollection services, IConfiguration configuration)
         {
             var isLoggingEnabled = configuration.GetValue<bool>("Services:Logging_Enabled");
             string logDirectory = string.Empty;
@@ -129,6 +130,8 @@ namespace WebAPI.Extensions
                 .WriteTo.File(txtLogFilePath, outputTemplate: outputTemplate, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, retainedFileCountLimit: null, shared: true)
                 .WriteTo.File(formatter: new JsonFormatter(), jsonLogFilePath, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, retainedFileCountLimit: null, shared: true)
                 .CreateLogger();
+
+            services.AddSingleton(Log.Logger);
         }
     }
 }

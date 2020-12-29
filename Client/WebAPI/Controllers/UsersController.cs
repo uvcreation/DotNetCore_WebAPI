@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WebAPI.Business.Core;
 using WebAPI.Business.Models;
 
@@ -17,9 +15,11 @@ namespace WebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private IUserService _userService;
-        public UsersController(IUserService userService)
+        private readonly ILogger _logger;
+        public UsersController(IUserService userService, ILogger logger)
         {
-            _userService = userService;
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
@@ -33,11 +33,16 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Authenticate(AuthenticateRequest model)
         {
+            _logger.Information($"User {model.Username} authenticating...");
             var response = _userService.Authenticate(model);
-
+            
             if (response == null)
+            {
+                _logger.Warning($"User {model.Username} or password {model.Password} is incorrect.");
                 return BadRequest(new { message = "Username or password is incorrect" });
+            }
 
+            _logger.Information($"User {model.Username} authenticated!");
             return Ok(response);
         }
     }

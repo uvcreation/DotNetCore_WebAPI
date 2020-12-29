@@ -12,7 +12,6 @@ namespace WebAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            Configuration.AddLogging();
         }
 
         public IConfiguration Configuration { get; }
@@ -26,6 +25,7 @@ namespace WebAPI
             services.AddSwaggerExtension();
             services.AddDatabaseConnection(Configuration);
             services.AddAppSettings(Configuration);
+            services.AddLogging(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
