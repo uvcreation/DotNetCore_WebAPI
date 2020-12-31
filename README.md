@@ -6,7 +6,13 @@ This repository contains a controller which is dealing with Products. You can GE
 
 Hope this helps.
 
-Access the endpoint here: https://uttamwebapi.herokuapp.com/swagger
+Access the API endpoints from here: https://uttamwebapi.herokuapp.com/swagger
+
+Use `(POST /api/Users/Authenticate)` endpoint to generate Jwt token.
+
+For `(POST /api/Product/AddProducts)` endpoint payload [Click here](https://github.com/uvcreation/DotNetCore_WebAPI/blob/main/Data/Add%20Product.json)
+
+For `(POST /api/Product/UpdateProducts)` endpoint payload [Click here](https://github.com/uvcreation/DotNetCore_WebAPI/blob/main/Data/Update%20Product.json) 
 
 # Technologies
 * ASP.NET Core 3.1
